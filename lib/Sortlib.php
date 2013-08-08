@@ -24,13 +24,13 @@ class Sortlib
     {
         $maxDevIndex  = count($sortList) - 1;
         $randomIndex  = rand(0, $maxDevIndex);
-        $randomPick   = $sortList[array_rand($sortList)];
+        $randomPick   = array_rand($sortList);
         $randomSecond = str_pad(rand(0, 59), 2, "0", STR_PAD_LEFT); 
         $second       = $date->format('s');
     
         shuffle($sortList);
 
-        if ($sortList[$randomIndex] == $randomPick || $randomSecond == $second) {
+        if ($randomIndex == $randomPick || $randomSecond == $second) {
             $sortList = $this->_shuffleArray($sortList, $date);
         }
 
