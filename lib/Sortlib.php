@@ -1,35 +1,40 @@
 <?php
+
 class Sortlib 
 {
     /**
-     * @param array $devList
+     * @var array
      */
-    public function __construct($devList)
+    protected $_sortList;
+    /**
+     * @param array $sortList
+     */
+    public function __construct($sortList)
     {
-        $this->_devs = $devList;
+        $this->_sortList = $sortList;
     }
 
     /**
-     * @param array    $devArray
+     * @param array    $sortList
      * @param DateTime $date
      *
      * @return array
      */
-    protected function _shuffleArray($devArray, $date) 
+    protected function _shuffleArray($sortList, $date)
     {
-        $maxDevIndex  = count($devArray) - 1;
+        $maxDevIndex  = count($sortList) - 1;
         $randomIndex  = rand(0, $maxDevIndex);
-        $randomPick   = $devArray[array_rand($devArray)];
+        $randomPick   = $sortList[array_rand($sortList)];
         $randomSecond = str_pad(rand(0, 59), 2, "0", STR_PAD_LEFT); 
         $second       = $date->format('s');
     
-        shuffle($devArray);
+        shuffle($sortList);
 
-        if ($devArray[$randomIndex] == $randomPick || $randomSecond == $second) {
-            $devArray = $this->_shuffleArray($devArray, $date);
+        if ($sortList[$randomIndex] == $randomPick || $randomSecond == $second) {
+            $sortList = $this->_shuffleArray($sortList, $date);
         }
 
-        return $devArray;
+        return $sortList;
     }
 
     /**
@@ -38,7 +43,7 @@ class Sortlib
      */
     public function run($date) 
     {	 
-        $sortedDevs = $this->_shuffleArray($this->_devs, $date);
+        $sortedDevs = $this->_shuffleArray($this->_sortList, $date);
 
         return $sortedDevs;
     }
