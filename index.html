@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Scrum Daily Random List</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link  rel="stylesheet" href="css/bootstrap.min.css" />
+</head>
+<body>
+    <div style="clear: both; height: 20px;"></div>
+    <div class="container">
+        <div class="row">
+            <h1>Today's (<span class="todays-date"></span>) almost completely random daily list</h1>
+        </div>
+        <div class="row">
+            <div class="col-lg-9"></div>
+        </div>
+        <div class="row">
+            <div class="col-lg-9">
+                <ul id="random-dev-list" class="list-group">
+                    <!-- autofill -->
+                </ul>
+            </div>
+            <div class="col-lg-1"></div>
+        </div>
+    </div>
+    
+    <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var date = new Date();
+        $('.todays-date').text(date.toDateString());
+        $('#random-dev-list').empty();
+
+        $.getJSON('app/sort.php', function(data) {
+            //console.debug(data);
+            for (var i = 0; i < data.length; i++) {
+                $('#random-dev-list').append("<li class=\"list-group-item\">" + data[i] + "</li>\n");
+            }
+        });
+    </script>
+</body>
+</html>
