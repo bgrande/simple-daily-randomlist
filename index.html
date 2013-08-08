@@ -32,7 +32,6 @@
         $('#random-dev-list').empty();
 
         $.getJSON('sort.php', function(data) {
-            //console.debug(data);
             for (var i = 0; i < data.length; i++) {
                 $('#random-dev-list').append("<li class=\"list-group-item\">" + data[i] + "</li>\n");
             }
