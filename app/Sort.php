@@ -109,7 +109,7 @@ class Sort
         $sortlib = new Sortlib($this->_devList);
         $sortedList = $sortlib->run($this->_date);
 
-        if ($this->_useCache) {
+        if ($this->_useCache && !file_exists($this->_cachedOutputFile)) {
             file_put_contents($this->_cachedOutputFile, json_encode($sortedList));
         }
 
