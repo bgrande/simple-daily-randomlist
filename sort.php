@@ -9,5 +9,8 @@ $sort = new Sort(APPLICATION_PATH . "/src/devlist.json");
 if (php_sapi_name() == "cli") {
     echo $sort->getListForCli();
 } else {
+    if ($_GET['resetListAndGenerateNew'] == true) {
+        $sort->resetList();
+    }
     echo $sort->getListAsJson();
 }

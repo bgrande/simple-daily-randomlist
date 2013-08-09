@@ -75,6 +75,14 @@ class Sort
     }
 
     /**
+     *
+     */
+    public function resetList()
+    {
+        $this->_deleteOutputFile($this->_cachedOutputFile);
+    }
+
+    /**
      * @return bool|string
      */
     protected function _getCachedOutputFileContent()
