@@ -91,7 +91,6 @@ class Sort
      */
     protected function _deleteOutputFile($fileToDelete)
     {
-        // @todo error handling
         if (file_exists($fileToDelete)) {
             unlink($fileToDelete);
         }
