@@ -7,10 +7,19 @@ require_once(APPLICATION_PATH . "/app/Sort.php");
 $sort = new Sort(APPLICATION_PATH . "/src/devlist.json");
 
 if (php_sapi_name() == "cli") {
-    echo $sort->getListForCli();
-} else {
+    try {
+        echo $sort->getListForCli();
+    } catch (Exception $e) {
+        echo $e->getMessage() . "\n";
+    }    
+} else {      
     if ($_GET['resetListAndGenerateNew'] == true) {
         $sort->resetList();
     }
-    echo $sort->getListAsJson();
+
+    try {
+        echo $sort->getListAsJson();
+    } catch (Exception $e) {
+        echo json_encode(array('error' => $e->getMessage()));
+    }    
 }

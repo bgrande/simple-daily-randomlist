@@ -43,6 +43,10 @@
          function getList(url) {
             $('#random-dev-list').empty();
             $.getJSON(url, function(data) {
+                if (undefined !== data.error) {
+                    alert("It did not work: " + data.error);
+                }
+                
                 for (var i = 0; i < data.length; i++) {
                     $('#random-dev-list').append("<li class=\"list-group-item\">" + data[i] + "</li>\n");
                 }

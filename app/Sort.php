@@ -31,7 +31,9 @@ class Sort
 
     /**
      * @param string $sourceFile
-     * @param bool   $useCache
+     * @param bool $useCache
+     * 
+     * @throws RuntimeException
      */
     public function __construct($sourceFile, $useCache = true)
     {
@@ -40,7 +42,12 @@ class Sort
         if (file_exists($sourceFile)) {
             $devListJson = file_get_contents($sourceFile);
         } else {
-            $devListJson = '[ "dummy", "dummy2" ]';
+            throw new RuntimeException(
+                sprintf(
+                    'Could not read list input file %s',
+                    basename($sourceFile)
+                )
+            );
         }
 
         $this->_useCache = $useCache;
@@ -66,7 +73,7 @@ class Sort
     }
 
     /**
-     * return json;
+     * @return string;
      */
     public function getListAsJson()
     {
@@ -75,7 +82,7 @@ class Sort
     }
 
     /**
-     *
+     * empty cached list     
      */
     public function resetList()
     {
@@ -94,8 +101,8 @@ class Sort
         return false;
     }
 
-    /**
-     * @param string $fileToDelete
+    /**    
+     * @param string $fileToDelete    
      */
     protected function _deleteOutputFile($fileToDelete)
     {
@@ -124,6 +131,9 @@ class Sort
         return $sortedList;
     }
 
+    /**
+     * initialize sorted cache file
+     */
     protected function _initializeCacheFile()
     {
         $yesterday = new DateTime("-1 day");
