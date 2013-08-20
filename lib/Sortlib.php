@@ -6,6 +6,7 @@ class Sortlib
      * @var array
      */
     protected $_sortList;
+    
     /**
      * @param array $sortList
      */
