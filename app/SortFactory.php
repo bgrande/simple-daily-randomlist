@@ -1,5 +1,8 @@
 <?php
 
+require_once(APPLICATION_PATH . "/app/CliSort.php");
+require_once(APPLICATION_PATH . "/app/JsonSort.php");
+
 class SortFactory
 {
     const TYPE_CLI = 'cli'; 
@@ -10,17 +13,18 @@ class SortFactory
         self::TYPE_CLI => 'CliSort',
         self::TYPE_JSON => 'JsonSort',        
     );
-    
+
     /**
      * the parametrized function to get create an instance
      *
      * @static
-     * @param $type
-     * @throws InvalidArgumentException
+     * @param string $type
+     * @param string $sourceFile
      * 
-     * @return 
+     * @throws InvalidArgumentException
+     * @return JsonSort|CliSort
      */
-    public static function factory($type)
+    public static function factory($type, $sourceFile = null)
     {
         switch ($type) {
             case self::TYPE_CLI: $className = self::$_typeMapper[self::TYPE_CLI];
@@ -31,10 +35,10 @@ class SortFactory
             
         }
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException('Missing format class.');
+            throw new \InvalidArgumentException('Missing sort class!');
         }
 
-        return new $className();
+        return new $className($sourceFile);
     }
 
 }

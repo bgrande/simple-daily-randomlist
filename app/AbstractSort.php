@@ -2,7 +2,7 @@
 
 require_once(APPLICATION_PATH . "/lib/Sortlib.php");
 
-class Sort
+class AbstractSort
 {
     /**
      * @var string
@@ -57,29 +57,7 @@ class Sort
         if ($this->_useCache) {
             $this->_initializeCacheFile();
         }
-    }
-
-    /**
-     * @return string
-     */
-    public function getListForCli()
-    {
-        $sortedList = $this->_sortList();
-        $title = "today's (" .
-            $this->_date->format('Y-m-d') .
-            ") almost completely random daily list: \n";
-
-        return $title . implode("\n", $sortedList) . "\n";
-    }
-
-    /**
-     * @return string;
-     */
-    public function getListAsJson()
-    {
-        $devList = $this->_sortList();
-        return json_encode($devList);
-    }
+    }    
 
     /**
      * empty cached list     

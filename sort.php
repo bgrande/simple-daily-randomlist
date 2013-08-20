@@ -2,28 +2,24 @@
 
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 
-require_once(APPLICATION_PATH . "/app/Sort.php");
+require_once(APPLICATION_PATH . "/app/SortFactory.php");
 
 $error = $sort = null;
-
-try {
-    $sort = new Sort(APPLICATION_PATH . "/src/devlist.json");
-} catch (Exception $e) {
-    $error = $e->getMessage();   
-}
+$type = 'json';
 
 if (php_sapi_name() == "cli") { 
-    if (null !== $error) {
-        echo $error . "\n";
-    } else {
-        echo $sort->getListForCli();
-    }
-} else {      
-    if (null !== $error) {
-        echo json_encode(array('error' => $error));
-    } else if ($_GET['resetListAndGenerateNew'] == true) {
+    $type = 'cli';    
+}
+
+try {
+    $sort = SortFactory::factory($type, APPLICATION_PATH . "/src/devlist.json");
+    
+    if ('json' == $type && $_GET['resetListAndGenerateNew'] == true) {
         $sort->resetList();
-    } else {
-        echo $sort->getListAsJson();
-    }
+    } 
+    
+    echo $sort->getSortedList();
+} catch (Exception $e) {
+    $error = $e->getMessage();
+    echo ($type == "cli") ? $error . "\n" : json_encode(array('error' => $error));
 }

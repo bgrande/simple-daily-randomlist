@@ -3,5 +3,4 @@
 
 # Todo
 * tests
-* factory implementation of different sort output
 * error handling
