@@ -16,6 +16,8 @@ class Sortlib
     }
 
     /**
+     * Completely nonsense random sorting
+     * 
      * @param array    $sortList
      * @param DateTime $date
      *
