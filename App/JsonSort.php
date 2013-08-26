@@ -1,7 +1,6 @@
 <?php
 
-require_once(APPLICATION_PATH . "/app/SortInterface.php");
-require_once(APPLICATION_PATH . "/app/AbstractSort.php");
+namespace dailySort\App;
 
 class JsonSort extends AbstractSort implements SortInterface
 {     

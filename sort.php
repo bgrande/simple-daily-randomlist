@@ -2,7 +2,7 @@
 
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 
-require_once(APPLICATION_PATH . "/app/SortFactory.php");
+require_once("bootstrap.php");
 
 $error = $sort = null;
 $type = 'json';
@@ -12,7 +12,7 @@ if (php_sapi_name() == "cli") {
 }
 
 try {
-    $sort = SortFactory::factory($type, APPLICATION_PATH . "/src/devlist.json");
+    $sort = dailySort\App\SortFactory::factory($type, APPLICATION_PATH . "/src/devlist.json");
     
     if ('json' == $type && $_GET['resetListAndGenerateNew'] == true) {
         $sort->resetList();

@@ -1,7 +1,6 @@
 <?php
 
-require_once(APPLICATION_PATH . "/app/CliSort.php");
-require_once(APPLICATION_PATH . "/app/JsonSort.php");
+namespace dailySort\App;
 
 class SortFactory
 {
@@ -10,8 +9,8 @@ class SortFactory
     const TYPE_JSON = 'json';
     
     private static $_typeMapper = array(
-        self::TYPE_CLI => 'CliSort',
-        self::TYPE_JSON => 'JsonSort',        
+        self::TYPE_CLI => 'dailySort\App\CliSort',
+        self::TYPE_JSON => 'dailySort\App\JsonSort',        
     );
 
     /**
@@ -21,7 +20,8 @@ class SortFactory
      * @param string $type
      * @param string $sourceFile
      * 
-     * @throws InvalidArgumentException
+     * @throws \InvalidArgumentException
+     * 
      * @return JsonSort|CliSort
      */
     public static function factory($type, $sourceFile = null)
@@ -34,8 +34,9 @@ class SortFactory
             default: $className = null;
             
         }
+        
         if (!class_exists($className)) {
-            throw new \InvalidArgumentException('Missing sort class!');
+            throw new \InvalidArgumentException("Missing sort class $className!");
         }
 
         return new $className($sourceFile);

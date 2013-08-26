@@ -1,6 +1,8 @@
 <?php
 
-require_once(APPLICATION_PATH . "/lib/Sortlib.php");
+namespace dailySort\App;
+
+use dailySort\Lib;
 
 class AbstractSort
 {
@@ -15,7 +17,7 @@ class AbstractSort
     protected $_devList = array();
 
     /**
-     * @var DateTime
+     * @var \DateTime
      */
     protected $_date;
 
@@ -32,8 +34,8 @@ class AbstractSort
     /**
      * @param string $sourceFile
      * @param bool $useCache
-     * 
-     * @throws RuntimeException
+     *
+     * @throws \RuntimeException
      */
     public function __construct($sourceFile, $useCache = true)
     {
@@ -42,7 +44,7 @@ class AbstractSort
         if (file_exists($sourceFile)) {
             $devListJson = file_get_contents($sourceFile);
         } else {
-            throw new RuntimeException(
+            throw new \RuntimeException(
                 sprintf(
                     'Could not read list input file %s',
                     basename($sourceFile)
@@ -51,7 +53,7 @@ class AbstractSort
         }
 
         $this->_useCache = $useCache;
-        $this->_date = new DateTime();
+        $this->_date = new \DateTime();
         $this->_devList = json_decode($devListJson);
 
         if ($this->_useCache) {
@@ -99,8 +101,8 @@ class AbstractSort
             return json_decode($cachedList);
         }
 
-        $sortlib = new Sortlib($this->_devList);
-        $sortedList = $sortlib->run($this->_date);
+        $sortlib = new Lib\SortLib($this->_devList);
+        $sortedList = $sortlib->sort($this->_date);
 
         if ($this->_useCache && !file_exists($this->_cachedOutputFile)) {
             file_put_contents($this->_cachedOutputFile, json_encode($sortedList));
@@ -114,8 +116,8 @@ class AbstractSort
      */
     protected function _initializeCacheFile()
     {
-        $yesterday = new DateTime("-1 day");
-        $basePath = dirname($this->_sourceFile) . '/' .
+        $yesterday = new \DateTime("-1 day");
+        $basePath = dirname($this->_sourceFile) . DIRECTORY_SEPARATOR .
             basename($this->_sourceFile, '.json') . '_';
 
         $fileToDelete = $basePath .

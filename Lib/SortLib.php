@@ -1,6 +1,8 @@
 <?php
 
-class Sortlib 
+namespace dailySort\Lib;
+
+class SortLib 
 {
     /**
      * @var array
@@ -10,7 +12,7 @@ class Sortlib
     /**
      * @param array $sortList
      */
-    public function __construct($sortList)
+    public function __construct(Array $sortList)
     {
         $this->_sortList = $sortList;
     }
@@ -18,8 +20,8 @@ class Sortlib
     /**
      * Completely nonsense random sorting
      * 
-     * @param array    $sortList
-     * @param DateTime $date
+     * @param array     $sortList
+     * @param \DateTime $date
      *
      * @return array
      */
@@ -41,11 +43,17 @@ class Sortlib
     }
 
     /**
-     * @param  DateTime $date
+     * @param \DateTime $date
+     * 
      * @return array
      */
-    public function run($date) 
+    public function sort($date = null) 
     {	 
+        // make sure we got a date
+        if (!($date instanceof \DateTime) || empty($date)) {
+            $date = new \DateTime();
+        }
+        
         $sortedDevs = $this->_shuffleArray($this->_sortList, $date);
 
         return $sortedDevs;
