@@ -3,8 +3,9 @@
 <head>
     <title>Scrum Daily Random List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link  rel="stylesheet" href="css/bootstrap.min.css" />
-    <link  rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="css/sort.css" />
 </head>
 <body>
     <div style="clear: both; height: 20px;"></div>
@@ -31,6 +32,8 @@
             </div>
         </div>
     </div>
+
+    <div class="alert alert-danger error-dialog"></div>
     
     <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
     <script type="text/javascript" src="js/bootstrap.min.js"></script>
@@ -45,14 +48,19 @@
             $('#random-dev-list').empty();
             $.getJSON(url, function(data) {
                 if (undefined !== data.error) {
-                    alert("It did not work: " + data.error);
+                    $('.error-dialog').empty()
+                            .append("<span>It did not work: " + data.error + "</span>")
+                            .show();
+                } else {
+                    $('.error-dialog').empty().hide();
                 }
                 
                 for (var i = 0; i < data.length; i++) {
-                    $('#random-dev-list').append("<li class=\"list-group-item\">" + data[i] + "</li>\n");
+                    $('#random-dev-list')
+                            .append("<li class=\"list-group-item\">" + data[i] + "</li>\n");
                 }
             });
-        }
+        }               
 
         $('.reset-button').on('click', function() {
             var getValue = $('.reset-input').val(); // hint: resetListAndGenerateNew=true

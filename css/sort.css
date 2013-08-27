@@ -1,0 +1,15 @@
+.error-dialog {
+    display: none;
+    color: #ff4b35;
+    font-weight: bold;
+    font-size: 1.2em;
+    position: absolute;
+    top:0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;    
+    width: 20em;
+    height: 5em;
+    border: 1px solid #ff4b35;
+}
