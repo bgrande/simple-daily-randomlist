@@ -8,7 +8,7 @@ $error = $sort = null;
 $type = 'json';
 
 if (php_sapi_name() == "cli") { 
-    $type = 'cli';    
+    $type = "cli";    
 }
 
 try {
