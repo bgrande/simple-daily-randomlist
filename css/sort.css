@@ -13,3 +13,7 @@
     height: 5em;
     border: 1px solid #ff4b35;
 }
+
+.remove-name {
+    cursor: pointer;
+}

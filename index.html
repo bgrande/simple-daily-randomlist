@@ -57,8 +57,16 @@
                 
                 for (var i = 0; i < data.length; i++) {
                     $('#random-dev-list')
-                            .append("<li class=\"list-group-item\">" + data[i] + "</li>\n");
+                            .append("<li class=\"list-group-item\">"
+                                    + "<span class=\"name-text\">" + data[i] + "</span>"
+                                    + "<span class=\"remove-name glyphicon glyphicon-remove pull-right\" title=\"remove from list temporarily\"></span>"
+                                    + "</li>\n"
+                            );
                 }
+
+                $('.remove-name').on('click', function() {                    
+                    $(this).parent('.list-group-item').remove();
+                });   
             });
         }               
 
