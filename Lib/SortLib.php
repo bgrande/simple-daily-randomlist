@@ -2,7 +2,7 @@
 
 namespace dailySort\Lib;
 
-class SortLib 
+class SortLib implements SortLibInterface
 {
     /**
      * @var array
