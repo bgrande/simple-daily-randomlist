@@ -40,6 +40,7 @@
     <script type="text/javascript">
         var date = new Date(),
             url = 'sort.php';
+
         $('.todays-date').text(date.toDateString());
 
         $(document).ready(getList(url));
@@ -57,11 +58,11 @@
                 
                 for (var i = 0; i < data.length; i++) {
                     $('#random-dev-list')
-                            .append("<li class=\"list-group-item\">"
-                                    + "<span class=\"name-text\">" + data[i] + "</span>"
-                                    + "<span class=\"remove-name glyphicon glyphicon-remove pull-right\" title=\"remove from list temporarily\"></span>"
-                                    + "</li>\n"
-                            );
+                        .append("<li class=\"list-group-item\">"
+                                + "<span class=\"name-text\">" + data[i] + "</span>"
+                                + "<span class=\"remove-name glyphicon glyphicon-remove pull-right\" title=\"remove from list temporarily\"></span>"
+                                + "</li>\n"
+                        );
                 }
 
                 $('.remove-name').on('click', function() {                    
