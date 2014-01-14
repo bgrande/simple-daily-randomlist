@@ -1,4 +1,4 @@
-# 1.0.0
+# 1.0.1
 
 # About
 Sorts an array or defined json list for example of names by random
