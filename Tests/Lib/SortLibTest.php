@@ -62,7 +62,7 @@ class SortLibTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \PHPUnit_Framework_Error
-     * @expectedExceptionMessage Argument 1 passed to dailySort\Lib\SortLib::__construct() must be an array, null given
+     * @expectedExceptionMessage Argument 1 passed to dailySort\Lib\SortLib::__construct() must be of the type array, null given
      */
     public function testSortWithoutSortData()
     {        
