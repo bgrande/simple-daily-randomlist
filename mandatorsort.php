@@ -12,7 +12,7 @@ try {
         // @todo better use listid as subfolder and save date specific lists in subfolder
         $listId = trim(preg_replace("([^\w\s\d\-_~,;:\[\]\(\]]|[\.]{2,})", '', $_GET['listid']));
 
-        $filePath = sprintf("src/list-%s.json", $listId);
+        $filePath = sprintf("src/%s/list.json", $listId);
 
         if (!file_exists($filePath)) {
             throw new RuntimeException('no valid listid provided!');

@@ -26,7 +26,13 @@ try {
         throw new RuntimeException('you are not allowed to upload files!');
     }
 
-    $targetFilePath = sprintf("src/list-%s.json", $hash);
+    $uploadDir = sprintf("src/%s", $hash);
+
+    if (!is_dir($uploadDir)) {
+        mkdir($uploadDir);
+    }
+
+    $targetFilePath = $uploadDir . "/list.json";
 
     if ('application/octet-stream' == $_FILES['list-upload-file']['type']) {
         $uploadFile = $_FILES['list-upload-file'];
