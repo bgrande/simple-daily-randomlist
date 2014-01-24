@@ -17,7 +17,7 @@ try {
         $hash = trim(preg_replace("([^\w\s\d\-_~,;:\[\]\(\]]|[\.]{2,})", '', $_GET['listid']));
         $isAllowed = true;
     } else if (!isset($_GET['listid'])) {
-        $base = time() . '-' . $_SERVER['REMOTE_ADDR'];
+        $base = microtime(true) . '-' . $_SERVER['REMOTE_ADDR'] . '-' . mt_rand(mt_rand(1,10),999999);
         $hash = hash("sha256", $base);
         session_id();
         session_set_cookie_params(time() + 691200);
