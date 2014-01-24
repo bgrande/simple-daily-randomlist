@@ -28,9 +28,9 @@ class SortLib implements SortLibInterface
     protected function _shuffleArray($sortList, $date)
     {
         $maxDevIndex  = count($sortList) - 1;
-        $randomIndex  = rand(0, $maxDevIndex);
+        $randomIndex  = mt_rand(0, $maxDevIndex);
         $randomPick   = array_rand($sortList);
-        $randomSecond = str_pad(rand(0, 59), 2, "0", STR_PAD_LEFT); 
+        $randomSecond = str_pad(mt_rand(0, 59), 2, "0", STR_PAD_LEFT);
         $second       = $date->format('s');
     
         shuffle($sortList);
