@@ -11,5 +11,6 @@ Sorts an array or defined json list for example of names by random either
 # Todo
 * restrict rights for files in src/!
 * improve administration settings and checking
+* make list durability configurable (not by day per dafault)
 * use classes for fileid and session management, maybe for output management, too...
 * upload through cli?
