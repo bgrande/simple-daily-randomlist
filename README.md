@@ -12,5 +12,5 @@ Sorts an array or defined json list for example of names by random either
 * restrict rights for files in src/!
 * improve administration settings and checking
 * make list durability configurable (not by day per dafault)
-* use classes for fileid and session management, maybe for output management, too...
+* use classes for fileid and session management, maybe for output management, too... Do not forget tests
 * upload through cli?
