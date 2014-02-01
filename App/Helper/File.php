@@ -6,12 +6,13 @@ class File
 {
 
      /**
-     * @param string $listId
-     *
-     * @throws \RuntimeException
-     *
-     * @returns string
-     */
+      * @param string $listId
+      *
+      * @throws \RuntimeException
+      *
+      * @return string
+      *
+      */
     public static function getFilePathById($listId)
     {
         $listId = self::sanatizeInput($listId);
