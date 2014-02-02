@@ -5,18 +5,23 @@ namespace dailySort\App\Helper;
 class File
 {
 
-     /**
-      * @param string $listId
-      *
-      * @throws \RuntimeException
-      *
-      * @return string
-      *
-      */
-    public static function getFilePathById($listId)
+    /**
+     * @var string
+     */
+    const BASE_PATH = 'src';
+
+    /**
+     * @param string $listId
+     * @param null|string $basePath
+     *
+     * @throws \RuntimeException
+     *
+     * @return string
+     */
+    public static function getFilePathById($listId, $basePath = null)
     {
         $listId = self::sanatizeInput($listId);
-        $filePath = sprintf("src/%s/list.json", $listId);
+        $filePath = sprintf("%s/%s/list.json", self::_getBasePath($basePath), $listId);
 
         if (!file_exists($filePath)) {
             throw new \RuntimeException('no valid listid provided!');
@@ -27,17 +32,24 @@ class File
 
     /**
      * @param string $listId
+     * @param null|string $basePath
+     *
+     * @throws \RuntimeException
      *
      * @return string
      */
-    public static function getUploadPath($listId)
+    public static function getUploadPath($listId, $basePath = null)
     {
         $listId = self::sanatizeInput($listId);
 
-        $uploadDir = sprintf("src/%s", $listId);
+        $uploadDir = sprintf("%s/%s", self::_getBasePath($basePath), $listId);
 
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir);
+        }
+
+        if (!file_exists($uploadDir)) {
+            throw new \RuntimeException(sprintf('could not create upload dir "%s"!', $uploadDir));
         }
 
         return $uploadDir . "/list.json";
@@ -60,6 +72,16 @@ class File
     public static function sanatizeInput($input)
     {
         return trim(preg_replace("([^\w\s\d\-_~,;:\[\]\(\]]|[\.]{2,})", '', $input));
+    }
+
+    /**
+     * @param string $basePath
+     *
+     * @return string
+     */
+    protected static function _getBasePath($basePath)
+    {
+        return $basePath != null ? $basePath : self::BASE_PATH;
     }
 
 }
