@@ -2,8 +2,7 @@
 
 namespace dailySort\Tests\App;
 
-use dailySort\App\Helper;
-use Symfony\Component\Yaml\Exception\RuntimeException;
+use dailySort\Lib\Helper;
 
 class FileHelperTest extends \PHPUnit_Framework_TestCase
 {
