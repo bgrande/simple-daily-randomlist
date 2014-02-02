@@ -1,6 +1,6 @@
 <?php
 
-namespace dailySort\Tests\App;
+namespace dailySort\Tests\Lib;
 
 use dailySort\Lib\Helper;
 

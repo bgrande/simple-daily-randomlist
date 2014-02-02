@@ -16,7 +16,7 @@ try {
         $hash = \dailySort\Lib\Helper\File::sanatizeInput($_GET['listid']);
         $isAllowed = true;
     } else if (!isset($_GET['listid'])) {
-        $hash = \dailySort\Lib\Helper\Hash::createListHash();
+        $hash = \dailySort\Lib\Helper\Hash::createListHash($_SERVER['REMOTE_ADDR']);
         session_id();
         session_set_cookie_params(time() + 691200);
         session_start();
