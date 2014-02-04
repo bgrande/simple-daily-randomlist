@@ -57,8 +57,12 @@ class File
 
     public static function uploadFile($targetPath, $file)
     {
+        if (!self::_checkUploadFile($file)) {
+            throw new \RuntimeException('The given file is no uploaded file');
+        }
+
         if ('application/octet-stream' == $file['type']) {
-            return move_uploaded_file($file['tmp_name'], $targetPath);
+            return self::_moveUploadFile($targetPath, $file);
         } else {
             throw new \RuntimeException('No valid file provided');
         }
@@ -82,6 +86,27 @@ class File
     protected static function _getBasePath($basePath)
     {
         return $basePath != null ? $basePath : self::BASE_PATH;
+    }
+
+    /**
+     * @param string $targetPath
+     * @param array  $file
+     *
+     * @return bool
+     */
+    public static function _moveUploadFile($targetPath, $file)
+    {
+        return move_uploaded_file($file['tmp_name'], $targetPath);
+    }
+
+    /**
+     * @param string $file
+     *
+     * @return bool
+     */
+    public static function _checkUploadFile($file)
+    {
+        return is_uploaded_file($file['tmp_name']);
     }
 
 }

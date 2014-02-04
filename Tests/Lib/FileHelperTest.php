@@ -84,21 +84,51 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @todo complete this!
+     * @todo fix that
      */
     public function testUploadFile()
     {
+        $fileHelper = $this->getMock('dailySort\Lib\Helper\File', array('_checkUploadFile', '_moveUploadFile'));
+
+        $fileHelper::staticExpects($this->once())
+            ->method('_checkUploadFile')
+            ->withAnyParameters()
+            ->will($this->returnValue(true));
+
+        $fileHelper::staticExpects($this->once())
+            ->method('_moveUploadFile')
+            ->withAnyParameters()
+            ->will($this->returnValue(true));
+
+        $fileHelper::staticExpects($this->once())
+            ->method('uploadFile');
+
         $file['type'] = 'application/octet-stream';
         $file['tmp_name'] = 'list.json';
         $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
 
-        $result = Helper\File::uploadFile($uploadPath, $file);
+        $result = $fileHelper::uploadFile($uploadPath, $file);
 
         $this->assertTrue($result);
     }
 
+    /**
+     * @todo fix that
+     */
     public function testUploadNotExistingFile()
     {
+        $fileHelper = $this->getMock('File');
+
+        $fileHelper::staticExpects($this->once())
+            ->method('_checkUploadFile')
+            ->withAnyParameters()
+            ->will($this->returnValue(true));
+
+        $fileHelper::staticExpects($this->once())
+            ->method('_moveUploadFile')
+            ->withAnyParameters()
+            ->will($this->returnValue(false));
+
         $file['type'] = 'application/octet-stream';
         $file['tmp_name'] = 'bar.json';
         $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
@@ -110,15 +140,38 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \RuntimeException
-     * @expectedExceptionMessage No valid file provided
+     * @expectedExceptionMessage The given file is no uploaded file
      */
-    public function testUploadInvalidFile()
+    public function testUploadNoUploadedFile()
     {
         $file['type'] = 'image/jpeg';
         $file['tmp_name'] = 'bar.jpg';
         $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
 
-        $result = Helper\File::uploadFile($uploadPath, $file);
+        Helper\File::uploadFile($uploadPath, $file);
+    }
+
+    /**
+     * @todo fix that
+     */
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage No valid file provided
+     */
+    public function testUploadInvalidFile()
+    {
+        $fileHelper = $this->getMock('File');
+
+        $fileHelper::staticExpects($this->once())
+            ->method('_checkUploadFile')
+            ->withAnyParameters()
+            ->will($this->returnValue(true));
+
+        $file['type'] = 'image/jpeg';
+        $file['tmp_name'] = 'bar.jpg';
+        $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
+
+        Helper\File::uploadFile($uploadPath, $file);
     }
 
     public function testSanatizeInput()
