@@ -1,6 +1,6 @@
 <?php
 
-namespace dailySort\Lib\Helper;
+namespace sort\Lib\Helper;
 
 class File
 {

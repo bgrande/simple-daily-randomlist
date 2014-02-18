@@ -1,8 +1,8 @@
 <?php
 
-namespace dailySort\Tests\App;
+namespace sort\Tests\App;
 
-use dailySort\App;
+use sort\App;
 
 class SortFactoryTest extends \PHPUnit_Framework_TestCase 
 {
@@ -18,7 +18,7 @@ class SortFactoryTest extends \PHPUnit_Framework_TestCase
      * 
      * @param null $file
      * 
-     * @return \dailySort\App\SortFactory
+     * @return \sort\App\SortFactory
      */
     protected function _setFactory($type, $file = null)
     {
@@ -47,13 +47,13 @@ class SortFactoryTest extends \PHPUnit_Framework_TestCase
     public function testJsonWithSourceFile()
     {
         $sortObject = App\SortFactory::factory('json', realpath(__DIR__) . DIRECTORY_SEPARATOR . $this->_sourceFile);
-        $this->assertInstanceOf('dailySort\App\JsonSort', $sortObject);
+        $this->assertInstanceOf('sort\App\JsonSort', $sortObject);
     }
 
     public function testCliWithSourceFile()
     {
         $sortObject = App\SortFactory::factory('cli', realpath(__DIR__) . DIRECTORY_SEPARATOR . $this->_sourceFile);
-        $this->assertInstanceOf('dailySort\App\CliSort', $sortObject);
+        $this->assertInstanceOf('sort\App\CliSort', $sortObject);
     }
 
     /**

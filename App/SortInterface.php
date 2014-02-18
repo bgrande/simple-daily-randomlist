@@ -1,6 +1,6 @@
 <?php
 
-namespace dailySort\App;
+namespace sort\App;
 
 interface SortInterface 
 {

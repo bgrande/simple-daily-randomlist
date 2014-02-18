@@ -7,8 +7,8 @@ if (!ini_get('date.timezone')) {
 defined('APPLICATION_PATH') || define('APPLICATION_PATH', realpath(dirname(__FILE__)));
 
 spl_autoload_register(function ($class) {
-    if (preg_match('#^dailySort\\\\(.+)$#', $class, $ret)) {
-        $relPath = str_replace('dailySort\\', '', $ret[0]);
+    if (preg_match('#^sort\\\\(.+)$#', $class, $ret)) {
+        $relPath = str_replace('sort\\', '', $ret[0]);
         $relPath = str_replace('\\', DIRECTORY_SEPARATOR, $relPath);
         require_once APPLICATION_PATH . DIRECTORY_SEPARATOR . $relPath . '.php';
     }

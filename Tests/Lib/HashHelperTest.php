@@ -1,8 +1,8 @@
 <?php
 
-namespace dailySort\Tests\Lib;
+namespace sort\Tests\Lib;
 
-use dailySort\Lib\Helper;
+use sort\Lib\Helper;
 
 class HashHelperTest extends \PHPUnit_Framework_TestCase
 {

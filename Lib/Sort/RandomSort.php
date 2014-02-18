@@ -1,8 +1,8 @@
 <?php
 
-namespace dailySort\Lib;
+namespace sort\Lib\Sort;
 
-class SortLib implements SortLibInterface
+class RandomSort implements SortLibInterface
 {
     /**
      * @var array

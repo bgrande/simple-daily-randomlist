@@ -1,8 +1,8 @@
 <?php
 
-namespace dailySort\Tests\Lib;
+namespace sort\Tests\Lib;
 
-use dailySort\Lib\Helper;
+use sort\Lib\Helper;
 
 class FileHelperTest extends \PHPUnit_Framework_TestCase
 {
@@ -88,7 +88,7 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testUploadFile()
     {
-        $fileHelper = $this->getMock('dailySort\Lib\Helper\File', array('_checkUploadFile', '_moveUploadFile'));
+        $fileHelper = $this->getMock('sort\Lib\Helper\File', array('_checkUploadFile', '_moveUploadFile'));
 
         $fileHelper::staticExpects($this->once())
             ->method('_checkUploadFile')

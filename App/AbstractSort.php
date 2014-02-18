@@ -1,8 +1,8 @@
 <?php
 
-namespace dailySort\App;
+namespace sort\App;
 
-use dailySort\Lib;
+use sort\Lib;
 
 class AbstractSort
 {
@@ -101,7 +101,7 @@ class AbstractSort
             return json_decode($cachedList);
         }
 
-        $sortlib = new Lib\SortLib($this->_devList);
+        $sortlib = new Lib\Sort\RandomSort($this->_devList);
         $sortedList = $sortlib->sort($this->_date);
 
         if ($this->_useCache && !file_exists($this->_cachedOutputFile)) {

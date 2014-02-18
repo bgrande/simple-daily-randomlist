@@ -8,7 +8,7 @@ try {
     if (isset($_GET['listid']) || isset($argv['listid'])) {
         $listId = $_GET['listid'] ? $_GET['listid'] : $argv['listid'];
 
-        $filePath = \dailySort\Lib\Helper\File::getFilePathById($listId);
+        $filePath = \sort\Lib\Helper\File::getFilePathById($listId);
     } else {
         throw new RuntimeException('no listid provided!');
     }

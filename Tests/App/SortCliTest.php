@@ -1,8 +1,8 @@
 <?php
 
-namespace dailySort\Tests\App;
+namespace sort\Tests\App;
 
-use dailySort\App;
+use sort\App;
 
 class SortCliTest extends \PHPUnit_Framework_TestCase 
 {

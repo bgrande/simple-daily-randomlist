@@ -1,6 +1,6 @@
 <?php
 
-namespace dailySort\App;
+namespace sort\App;
 
 class SortFactory
 {
@@ -9,8 +9,8 @@ class SortFactory
     const TYPE_JSON = 'json';
     
     private static $_typeMapper = array(
-        self::TYPE_CLI => 'dailySort\App\CliSort',
-        self::TYPE_JSON => 'dailySort\App\JsonSort',        
+        self::TYPE_CLI => 'sort\App\CliSort',
+        self::TYPE_JSON => 'sort\App\JsonSort',
     );
 
     /**

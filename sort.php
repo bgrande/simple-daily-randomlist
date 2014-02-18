@@ -8,7 +8,7 @@ if (php_sapi_name() == "cli") {
 }
 
 try {
-    $sort = dailySort\App\SortFactory::factory($type, $filePath);
+    $sort = sort\App\SortFactory::factory($type, $filePath);
 
     if ("json" == $type && ($argv['resetListAndGenerateNew'] == true || $_GET['resetListAndGenerateNew'] == true)) {
         $sort->resetList();

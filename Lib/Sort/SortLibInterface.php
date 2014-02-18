@@ -1,6 +1,6 @@
 <?php
 
-namespace dailySort\Lib;
+namespace sort\Lib\Sort;
 
 interface SortLibInterface
 {
