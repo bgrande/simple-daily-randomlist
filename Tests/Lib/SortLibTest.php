@@ -17,13 +17,13 @@ class SortLibTest extends \PHPUnit_Framework_TestCase
     );
 
     /**
-     * @var Lib\SortLib
+     * @var Lib\Sort\RandomSort
      */
     protected $_sortLib;
 
     protected function setUp()
     {
-        $this->_sortLib = new Lib\SortLib(
+        $this->_sortLib = new Lib\Sort\RandomSort(
             $this->_testData
         );
     }
@@ -62,11 +62,11 @@ class SortLibTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @expectedException \PHPUnit_Framework_Error
-     * @expectedExceptionMessage Argument 1 passed to sort\Lib\SortLib::__construct() must be of the type array, null given
+     * @expectedExceptionMessage Argument 1 passed to sort\Lib\Sort\RandomSort::__construct() must be of the type array, null given
      */
     public function testSortWithoutSortData()
     {        
-        $sortlib = new Lib\SortLib(
+        $sortlib = new Lib\Sort\RandomSort(
             null
         );
     }
