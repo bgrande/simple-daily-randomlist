@@ -101,8 +101,8 @@ class AbstractSort
             return json_decode($cachedList);
         }
 
-        $sortlib = new Lib\Sort\RandomSort($this->_devList);
-        $sortedList = $sortlib->sort($this->_date);
+        $sortLib = new Lib\Sort\Random($this->_devList);
+        $sortedList = $sortLib->sort($this->_date);
 
         if ($this->_useCache && !file_exists($this->_cachedOutputFile)) {
             file_put_contents($this->_cachedOutputFile, json_encode($sortedList));

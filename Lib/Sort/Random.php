@@ -2,7 +2,7 @@
 
 namespace sort\Lib\Sort;
 
-class RandomSort implements SortLibInterface
+class Random implements SortLibInterface
 {
     /**
      * @var array
