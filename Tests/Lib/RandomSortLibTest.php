@@ -4,7 +4,7 @@ namespace sort\Tests\Lib;
 
 use sort\Lib;
 
-class SortLibTest extends \PHPUnit_Framework_TestCase 
+class RandomSortLibTest extends \PHPUnit_Framework_TestCase
 {
     protected $_testData = array(
         'Dev1',
