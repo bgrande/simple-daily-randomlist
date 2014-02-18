@@ -63,7 +63,7 @@ class SortFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithoutSourceFile($type)
     {
-        $sortObject = App\SortFactory::factory($type);
+        App\SortFactory::factory($type);
     }
 
     /**
@@ -73,6 +73,6 @@ class SortFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testWithoutType($type)
     {
-        $sortObject = App\SortFactory::factory($type);
+        App\SortFactory::factory($type);
     }
 }

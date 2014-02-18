@@ -24,6 +24,10 @@ class SortFactory
      */
     public static function factory($type, $list = array())
     {
+        if (empty($list)) {
+            throw new \InvalidArgumentException("The list you provided ist empty!");
+        }
+
         switch ($type) {
             case self::TYPE_RANDOM: $className = self::$_typeMapper[self::TYPE_RANDOM];
                 break;
