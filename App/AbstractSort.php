@@ -2,7 +2,7 @@
 
 namespace sort\App;
 
-use sort\Lib;
+use sort\Lib\Sort;
 
 class AbstractSort
 {
@@ -101,7 +101,8 @@ class AbstractSort
             return json_decode($cachedList);
         }
 
-        $sortLib = new Lib\Sort\Random($this->_devList);
+        /** @var Sort\Random $sortLib */
+        $sortLib = Sort\SortFactory::factory(Sort\SortFactory::TYPE_RANDOM, $this->_devList);
         $sortedList = $sortLib->sort($this->_date);
 
         if ($this->_useCache && !file_exists($this->_cachedOutputFile)) {
