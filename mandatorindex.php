@@ -14,9 +14,9 @@ if (isset($_GET['error'])) {
 <head>
     <title>Random List</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="css/bootstrap.min.css" />
-    <link rel="stylesheet" href="css/bootstrap-theme.min.css" />
-    <link rel="stylesheet" href="css/sort.css" />
+    <link rel="stylesheet" href="public/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="public/css/bootstrap-theme.min.css" />
+    <link rel="stylesheet" href="public/css/sort.css" />
 </head>
 <body>
 
@@ -81,8 +81,8 @@ if (isset($_GET['error'])) {
 
     <div class="alert alert-danger error-dialog"></div>
     
-    <script type="text/javascript" src="js/jquery-2.0.3.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="public/js/jquery-2.0.3.min.js"></script>
+    <script type="text/javascript" src="public/js/bootstrap.min.js"></script>
     <script type="text/javascript">
         var date = new Date(),
             listId = '<?php echo $listId ?>',
