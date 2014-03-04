@@ -10,7 +10,7 @@ if (php_sapi_name() == "cli") {
 try {
     $sort = sort\App\SortFactory::factory($type, $filePath);
 
-    if ("json" == $type && ($argv['resetListAndGenerateNew'] == true || $_GET['resetListAndGenerateNew'] == true)) {
+    if ("json" == $type && ((isset($argv) && $argv['resetListAndGenerateNew'] == true) || (isset($_GET) && $_GET['resetListAndGenerateNew'] == true))) {
         $sort->resetList();
     }
 

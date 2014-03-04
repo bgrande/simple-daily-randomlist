@@ -35,6 +35,7 @@ if (isset($_GET['error'])) {
                 <form method="post" action="upload.php" enctype="multipart/form-data">
                     <div class="input-group">
                         <label for="list-upload-email">Please enter your email address to receive the administration link</label>
+                        <br />
                         <input style="width: 20em;" type="email" name="list-upload-email" id="list-upload-email" class="form-control" />
                     </div>
                     <div>&nbsp;</div>
