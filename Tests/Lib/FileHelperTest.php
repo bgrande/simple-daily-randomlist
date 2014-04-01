@@ -37,7 +37,10 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     public function testGetFilePathById()
     {
         $expected = \vfsStream::url('src/foo/list.json');
-        $filepath = Helper\File::getFilePathById('foo', \vfsStream::url('src'));
+        $fileHelper = new Helper\File(\vfsStream::url('src'));
+
+        $filepath = $fileHelper->getFilePathById('foo');
+
         $this->assertEquals($expected, $filepath);
     }
 
@@ -47,7 +50,9 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFilePathByInvalidId()
     {
-        $filepath = Helper\File::getFilePathById('bar', \vfsStream::url('src'));
+        $fileHelper = new Helper\File(\vfsStream::url('src'));
+
+        $filepath = $fileHelper->getFilePathById('bar');
     }
 
     /**
@@ -56,20 +61,30 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFilePathByIdWithInvalidBasePath()
     {
-        $filepath = Helper\File::getFilePathById('foo');
+        $fileHelper = new Helper\File(\vfsStream::url('src/bar'));
+
+        $filepath = $fileHelper->getFilePathById('foo');
     }
 
     public function testGetUploadPath()
     {
         $expected = \vfsStream::url('src/foo/list.json');
-        $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
+
+        $fileHelper = new Helper\File(\vfsStream::url('src'));
+
+        $uploadPath = $fileHelper->getUploadPath('foo');
+
         $this->assertEquals($expected, $uploadPath);
     }
 
     public function testGetUploadPathDirNotExisting()
     {
         $expected = \vfsStream::url('src/bar/list.json');
-        $uploadPath = Helper\File::getUploadPath('bar', \vfsStream::url('src'));
+
+        $fileHelper = new Helper\File(\vfsStream::url('src'));
+
+        $uploadPath = $fileHelper->getUploadPath('bar');
+
         $this->assertEquals($expected, $uploadPath);
     }
 
@@ -80,60 +95,58 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     public function testGetUploadPathDirNotExistingAndCannotBeCreated()
     {
         $newRoot = \vfsStream::setup('src', 0000);
-        $uploadPath = Helper\File::getUploadPath('bar', \vfsStream::url('src'));
+        $fileHelper = new Helper\File(\vfsStream::url('src'));
+
+        $uploadPath = $fileHelper->getUploadPath('bar');
     }
 
-    /**
-     * @todo fix that
-     */
     public function testUploadFile()
     {
-        $fileHelper = $this->getMock('sort\Lib\Helper\File', array('_checkUploadFile', '_moveUploadFile'));
+        $fileHelper = $this->_getFileHelperMock();
 
-        $fileHelper::staticExpects($this->once())
+        $fileHelper->expects($this->once())
             ->method('_checkUploadFile')
             ->withAnyParameters()
             ->will($this->returnValue(true));
 
-        $fileHelper::staticExpects($this->once())
+        $fileHelper->expects($this->once())
             ->method('_moveUploadFile')
             ->withAnyParameters()
             ->will($this->returnValue(true));
 
-        $fileHelper::staticExpects($this->once())
-            ->method('uploadFile');
-
         $file['type'] = 'application/octet-stream';
         $file['tmp_name'] = 'list.json';
-        $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
 
-        $result = $fileHelper::uploadFile($uploadPath, $file);
+        $fileHelper->setFile($file);
+
+        $uploadPath = $fileHelper->getUploadPath('foo');
+
+        $result = $fileHelper->uploadFile($uploadPath);
 
         $this->assertTrue($result);
     }
 
-    /**
-     * @todo fix that
-     */
     public function testUploadNotExistingFile()
     {
-        $fileHelper = $this->getMock('File');
+        $fileHelper = $this->_getFileHelperMock();
 
-        $fileHelper::staticExpects($this->once())
+        $fileHelper->expects($this->once())
             ->method('_checkUploadFile')
             ->withAnyParameters()
             ->will($this->returnValue(true));
 
-        $fileHelper::staticExpects($this->once())
+        $fileHelper->expects($this->once())
             ->method('_moveUploadFile')
             ->withAnyParameters()
             ->will($this->returnValue(false));
 
         $file['type'] = 'application/octet-stream';
         $file['tmp_name'] = 'bar.json';
-        $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
+        $fileHelper->setFile($file);
 
-        $result = Helper\File::uploadFile($uploadPath, $file);
+        $uploadPath = $fileHelper->getUploadPath('foo');
+
+        $result = $fileHelper->uploadFile($uploadPath);
 
         $this->assertFalse($result);
     }
@@ -144,34 +157,35 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testUploadNoUploadedFile()
     {
+        $fileHelper = new Helper\File(\vfsStream::url('src'));
+
         $file['type'] = 'image/jpeg';
         $file['tmp_name'] = 'bar.jpg';
-        $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
+        $fileHelper->setFile($file);
+        $uploadPath = $fileHelper->getUploadPath('foo');
 
-        Helper\File::uploadFile($uploadPath, $file);
+        $fileHelper->uploadFile($uploadPath);
     }
 
-    /**
-     * @todo fix that
-     */
     /**
      * @expectedException \RuntimeException
      * @expectedExceptionMessage No valid file provided
      */
     public function testUploadInvalidFile()
     {
-        $fileHelper = $this->getMock('File');
+        $fileHelper = $this->_getFileHelperMock();
 
-        $fileHelper::staticExpects($this->once())
+        $fileHelper->expects($this->once())
             ->method('_checkUploadFile')
             ->withAnyParameters()
             ->will($this->returnValue(true));
 
         $file['type'] = 'image/jpeg';
         $file['tmp_name'] = 'bar.jpg';
-        $uploadPath = Helper\File::getUploadPath('foo', \vfsStream::url('src'));
+        $fileHelper->setFile($file);
+        $uploadPath = $fileHelper->getUploadPath('foo');
 
-        Helper\File::uploadFile($uploadPath, $file);
+        $fileHelper->uploadFile($uploadPath);
     }
 
     public function testSanatizeInput()
@@ -179,9 +193,23 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
         $input = "foo\\bar/foo/bar-foo.bar/.././";
         $expected = "foobarfoobar-foobar";
 
-        $sanatized = Helper\File::sanatizeInput($input);
+        $fileHelper = $fileHelper = new Helper\File(\vfsStream::url('src'));;
+
+        $sanatized = $fileHelper->sanatizeInput($input);
 
         $this->assertEquals($expected, $sanatized);
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function _getFileHelperMock()
+    {
+        return $this->getMock(
+            'sort\Lib\Helper\File',
+            array('_checkUploadFile', '_moveUploadFile'),
+            array(\vfsStream::url('src'))
+        );
     }
 
 }

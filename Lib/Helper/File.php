@@ -11,17 +11,52 @@ class File
     const BASE_PATH = 'src';
 
     /**
+     * @var array
+     */
+    protected $_file;
+
+    /**
+     * @var string
+     */
+    protected $_basePath;
+
+    /**
+     * @param string|null $basePath
+     *
+     * @throws \RuntimeException
+     */
+    public function __construct($basePath = null)
+    {
+        $this->_basePath = $basePath;
+    }
+
+    /**
+     * @param array $file
+     *
+     * @throws \RuntimeException
+     */
+    public function setFile($file)
+    {
+        /** @todo make sure file is a real file  */
+
+        $this->_file = $file;
+
+        if (!$this->_checkUploadFile()) {
+            throw new \RuntimeException('The given file is no uploaded file');
+        }
+    }
+
+    /**
      * @param string $listId
-     * @param null|string $basePath
      *
      * @throws \RuntimeException
      *
      * @return string
      */
-    public static function getFilePathById($listId, $basePath = null)
+    public function getFilePathById($listId)
     {
-        $listId = self::sanatizeInput($listId);
-        $filePath = sprintf("%s/%s/list.json", self::_getBasePath($basePath), $listId);
+        $listId = $this->sanatizeInput($listId);
+        $filePath = sprintf("%s/%s/list.json", $this->_getBasePath(), $listId);
 
         if (!file_exists($filePath)) {
             throw new \RuntimeException('no valid listid provided!');
@@ -32,17 +67,16 @@ class File
 
     /**
      * @param string $listId
-     * @param null|string $basePath
      *
      * @throws \RuntimeException
      *
      * @return string
      */
-    public static function getUploadPath($listId, $basePath = null)
+    public function getUploadPath($listId)
     {
-        $listId = self::sanatizeInput($listId);
+        $listId = $this->sanatizeInput($listId);
 
-        $uploadDir = sprintf("%s/%s", self::_getBasePath($basePath), $listId);
+        $uploadDir = sprintf("%s/%s", $this->_getBasePath(), $listId);
 
         if (!is_dir($uploadDir)) {
             mkdir($uploadDir);
@@ -55,14 +89,17 @@ class File
         return $uploadDir . "/list.json";
     }
 
-    public static function uploadFile($targetPath, $file)
+    /**
+     * @param string $targetPath
+     *
+     * @return bool
+     *
+     * @throws \RuntimeException
+     */
+    public function uploadFile($targetPath)
     {
-        if (!self::_checkUploadFile($file)) {
-            throw new \RuntimeException('The given file is no uploaded file');
-        }
-
-        if ('application/octet-stream' == $file['type']) {
-            return self::_moveUploadFile($targetPath, $file);
+        if ('application/octet-stream' == $this->_file['type']) {
+            return $this->_moveUploadFile($targetPath);
         } else {
             throw new \RuntimeException('No valid file provided');
         }
@@ -73,41 +110,35 @@ class File
      *
      * @return string
      */
-    public static function sanatizeInput($input)
+    public function sanatizeInput($input)
     {
         return trim(preg_replace("([^\w\s\d\-_~,;:\[\]\(\]]|[\.]{2,})", '', $input));
     }
 
     /**
-     * @param string $basePath
-     *
      * @return string
      */
-    protected static function _getBasePath($basePath)
+    protected function _getBasePath()
     {
-        return $basePath != null ? $basePath : self::BASE_PATH;
+        return $this->_basePath != null ? $this->_basePath : self::BASE_PATH;
     }
 
     /**
      * @param string $targetPath
-     * @param array  $file
      *
      * @return bool
      */
-    public static function _moveUploadFile($targetPath, $file)
+    public function _moveUploadFile($targetPath)
     {
-        return move_uploaded_file($file['tmp_name'], $targetPath);
+        return move_uploaded_file($this->_file['tmp_name'], $targetPath);
     }
 
     /**
-     * @param string $file
-     *
      * @return bool
      */
-    public static function _checkUploadFile($file)
+    public function _checkUploadFile()
     {
-        return is_uploaded_file($file['tmp_name']);
+        return is_uploaded_file($this->_file['tmp_name']);
     }
 
 }
- 
