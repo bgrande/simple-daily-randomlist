@@ -52,7 +52,7 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     {
         $fileHelper = new Helper\File(\vfsStream::url('src'));
 
-        $filepath = $fileHelper->getFilePathById('bar');
+        $fileHelper->getFilePathById('bar');
     }
 
     /**
@@ -63,7 +63,7 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     {
         $fileHelper = new Helper\File(\vfsStream::url('src/bar'));
 
-        $filepath = $fileHelper->getFilePathById('foo');
+        $fileHelper->getFilePathById('foo');
     }
 
     public function testGetUploadPath()
@@ -94,10 +94,10 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUploadPathDirNotExistingAndCannotBeCreated()
     {
-        $newRoot = \vfsStream::setup('src', 0000);
+        \vfsStream::setup('src', 0000);
         $fileHelper = new Helper\File(\vfsStream::url('src'));
 
-        $uploadPath = $fileHelper->getUploadPath('bar');
+        $fileHelper->getUploadPath('bar');
     }
 
     public function testUploadFile()
@@ -201,7 +201,7 @@ class FileHelperTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
+     * @return \PHPUnit_Framework_MockObject_MockObject|Helper\File
      */
     protected function _getFileHelperMock()
     {
