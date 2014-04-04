@@ -39,7 +39,9 @@ class SortFactory
             throw new \InvalidArgumentException("Missing sort class $className!");
         }
 
-        return new $className($sourceFile);
+        $repository = new Repository($sourceFile, '1day');
+
+        return new $className($repository);
     }
 
 }

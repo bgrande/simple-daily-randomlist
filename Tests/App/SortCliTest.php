@@ -34,12 +34,14 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
 
     public function testSortCliWithCacheEnabled()
     {
-        $jsonSort = new App\CliSort(\vfsStream::url($this->_sourceFile));
+        $repository = $this->_getRepositoryMock();
+
+        $jsonSort = new App\CliSort($repository);
         $sortedList = $jsonSort->getSortedList();
         
         $this->assertContains("almost completely random daily list", $sortedList);
 
-        $jsonSort2 = new App\CliSort(\vfsStream::url($this->_sourceFile));
+        $jsonSort2 = new App\CliSort($repository);
         $sortedList2 = $jsonSort2->getSortedList();
 
         $this->assertContains("Dummy1", $sortedList);
@@ -76,5 +78,18 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
         $this->assertContains("Dummy5", $sortedList2);
 
         $this->assertNotEquals($sortedList, $sortedList2); // well this might sometimes be equal though...
+    }
+
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function _getRepositoryMock()
+    {
+        $repository = $this->getMock(
+            'sort\App\Repository',
+            array('getOutputList', 'getOriginalList', 'setOutputFile', 'resetList'),
+            array(\vfsStream::url($this->_sourceFile), '1day')
+        );
+        return $repository;
     }
 }
