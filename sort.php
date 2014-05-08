@@ -10,7 +10,7 @@ if (php_sapi_name() == "cli") {
 }
 
 try {
-    $sort = dailySort\App\SortFactory::factory($type, APPLICATION_PATH . "/src/devlist.json");
+    $sort = dailySort\App\SortFactory::factory($type, APPLICATION_PATH . "/src/list.json");
     
     if ("json" == $type && $_GET['resetListAndGenerateNew'] == true) {
         $sort->resetList();
