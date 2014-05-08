@@ -17,16 +17,25 @@
         <mkdir dir="temp/src" />
 
         <copy todir="temp/${folder-to-zip}">
-            <fileset dir="App" />
-            <fileset dir="css" />
-            <fileset dir="fonts" />
-            <fileset dir="js" />
-            <fileset dir="Lib" />
+            <fileset dir=".">
+                <include name="App/*" />
+                <include name="css/*" />
+                <include name="fonts/*" />
+                <include name="js/*" />
+                <include name="Lib/*" />
+                <include name="bootstrap.php" />
+                <include name="src/list.json" />
+                <include name="sort.php" />
+                <include name="index.html" />
+                <exclude name="Tests" />
+                <exclude name="temp" />
+                <exclude name="build" />
+                <exclude name="atlassian-ide-plugin.xml" />
+                <exclude name="build.xml" />
+                <exclude name="phpunit.xml" />
+                <exclude name="README.md" />
+            </fileset>
         </copy>
-        <copy file="bootstrap.php" todir="temp/${folder-to-zip}" />
-        <copy file="src/list.json" todir="temp/${folder-to-zip}/src" />
-        <copy file="sort.php" todir="temp/${folder-to-zip}" />
-        <copy file="index.html" todir="temp/${folder-to-zip}" />
     </target>
 
     <target name="zip" depends="prepare">
