@@ -143,18 +143,7 @@ class Repository
      */
     protected function _getFileContentByPath($path)
     {
-        if (file_exists($path)) {
-            $fileContent = json_decode(file_get_contents($path));
-        } else {
-            throw new \RuntimeException(
-                sprintf(
-                    'Could not read list input file %s',
-                    basename($path)
-                )
-            );
-        }
-
-        return $fileContent;
+       return json_decode(file_get_contents($path));
     }
 
     /**

@@ -75,6 +75,17 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($repository->getOutputList());
     }
 
+    /**
+     * @expectedException \RuntimeException
+     * @expectedExceptionMessage File  is not a valid json file or empty
+     */
+    public function testSetWrongOutputFile()
+    {
+        $repository = new App\Repository(\vfsStream::url($this->_sourceFile), false);
+
+        $repository->setOutputFile(null);
+    }
+
     public function testResetList()
     {
         $repository = new App\Repository(\vfsStream::url($this->_sourceFile), '1day');
@@ -85,6 +96,21 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $repository->resetList();
 
         $this->assertFalse($repository->getOutputList());
+    }
+
+    public function testGetNotSetOutputFile()
+    {
+        $repository = new App\Repository(\vfsStream::url($this->_sourceFile));
+
+        $devFile = new \vfsStreamFile('devlist_forever.json');
+        $devFile->setContent(
+            $this->_sourceContent
+        );
+        $this->_root->addChild($devFile);
+
+        $expected = array("Dummy1", "Dummy2", "Dummy3", "Dummy4", "Dummy5", "Dummy6");
+
+        $this->assertEquals($expected, $repository->getOutputList());
     }
 
     public function testCantGetOriginalList()
