@@ -4,52 +4,14 @@ namespace sort\Tests\App;
 
 use sort\App;
 
-class SortCliTest extends \PHPUnit_Framework_TestCase 
+class SortCliTest extends SortAbstract
 {
-    protected $_sourceFile = 'src/devlist.json';
-
-    protected $_sourceContent = '[
-        "Dummy1",
-        "Dummy2",
-        "Dummy3",
-        "Dummy4",
-        "Dummy5",
-        "Dummy6"
-    ]';
-
-    protected $_firstContent = array(
-        "Dummy2",
-        "Dummy3",
-        "Dummy5",
-        "Dummy4",
-        "Dummy1",
-        "Dummy6"
-    );
-
-    protected $_secondContent = array(
-        "Dummy2",
-        "Dummy1",
-        "Dummy6",
-        "Dummy4",
-        "Dummy3",
-        "Dummy5"
-    );
 
     protected $_formattedDate;
 
-    /**
-     * @var \vfsStream
-     */
-    protected $_root;
-
     protected function setUp()
     {
-        $this->_root = \vfsStream::setup('src');
-        $devFile = new \vfsStreamFile('devlist.json');
-        $devFile->setContent(
-            $this->_sourceContent
-        );
-        $this->_root->addChild($devFile);
+        parent::setUp();
 
         $date = new \DateTime();
         $this->_formattedDate = $date->format('Y-m-d');
@@ -63,15 +25,15 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
             ->method('getOutputList')
             ->will($this->returnValue($this->_firstContent));
 
-        $jsonSort = new App\CliSort($repository);
-        $sortedList = $jsonSort->getSortedList();
+        $cliSort = new App\CliSort($repository);
+        $sortedList = $cliSort->getSortedList();
 
         $testResult = "today's ($this->_formattedDate) almost completely random daily list:\nDummy2\nDummy3\nDummy5\nDummy4\nDummy1\nDummy6";
 
         $this->assertEquals($testResult, $sortedList);
 
-        $jsonSort2 = new App\CliSort($repository);
-        $sortedList2 = $jsonSort2->getSortedList();
+        $cliSort2 = new App\CliSort($repository);
+        $sortedList2 = $cliSort2->getSortedList();
 
         $this->assertEquals($testResult, $sortedList2);
 
@@ -146,17 +108,4 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
         $this->assertNotEquals($sortedList1, $sortedList2);
     }
 
-    /**
-     * @return \PHPUnit_Framework_MockObject_MockObject
-     */
-    protected function _getRepositoryMock()
-    {
-        $repository = $this->getMock(
-            'sort\App\Repository',
-            array('getOutputList', 'getOriginalList', 'setOutputFile', 'resetList'),
-            array(\vfsStream::url($this->_sourceFile), '1day')
-        );
-
-        return $repository;
-    }
 }

@@ -6,77 +6,97 @@ use sort\App;
 
 require_once 'vfsStream/vfsStream.php';
 
-class SortJsonTest extends \PHPUnit_Framework_TestCase 
+class SortJsonTest extends SortAbstract
 {
-    protected $_sourceFile = 'src/devlist.json';
-    
-    protected $_sourceContent = '[
-        "Dummy1",
-        "Dummy2",
-        "Dummy3",
-        "Dummy4",
-        "Dummy5",
-        "Dummy6"
-    ]';
-
-    /**
-     * @var \vfsStream
-     */
-    protected $_root;
-    
-    protected function setUp()
-    {        
-        $this->_root = \vfsStream::setup('src');
-        $devFile = new \vfsStreamFile('devlist.json');
-        $devFile->setContent(
-            $this->_sourceContent
-        );
-        $this->_root->addChild($devFile);
-    }
 
     public function testSortJsonWithCacheEnabled()
     {
-        $jsonSort = new App\JsonSort(\vfsStream::url($this->_sourceFile));
-        $sortedList = $jsonSort->getSortedList();
-        
-        $this->assertCount(6, json_decode($sortedList));  
+        $repository = $this->_getRepositoryMock();
 
-        $jsonSort2 = new App\JsonSort(\vfsStream::url($this->_sourceFile));
+        $repository->expects($this->any())
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_firstContent));
+
+        $jsonSort = new App\JsonSort($repository);
+        $sortedList = $jsonSort->getSortedList();
+
+        $testResult = json_encode($this->_firstContent);
+
+        $this->assertEquals($testResult, $sortedList);
+
+        $jsonSort2 = new App\JsonSort($repository);
         $sortedList2 = $jsonSort2->getSortedList();
-        
-        $this->assertCount(6, json_decode($sortedList2));
-        
+
+        $this->assertEquals($testResult, $sortedList2);
+
         $this->assertEquals($sortedList, $sortedList2);
     }
 
     public function testSortJsonWithCacheDisabled()
     {
-        $jsonSort = new App\JsonSort(\vfsStream::url($this->_sourceFile), false);
+        $repository1 = $this->_getRepositoryMock();
+
+        $repository1->expects($this->any())
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_firstContent));
+
+        $jsonSort = new App\JsonSort($repository1);
         $sortedList = $jsonSort->getSortedList();
 
-        $this->assertCount(6, json_decode($sortedList));
+        $testResult = json_encode($this->_firstContent);
 
-        $jsonSort2 = new App\JsonSort(\vfsStream::url($this->_sourceFile), false);
+        $this->assertEquals($testResult, $sortedList);
+
+        $repository2 = $this->_getRepositoryMock();
+
+        $repository2->expects($this->any())
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_secondContent));
+
+        $jsonSort2 = new App\JsonSort($repository2);
         $sortedList2 = $jsonSort2->getSortedList();
-        
-        $this->assertCount(6, json_decode($sortedList2));
 
-        $this->assertNotEquals($sortedList, $sortedList2); // well this might sometimes be equal though...
+        $testResult2 = json_encode($this->_secondContent);
+
+        $this->assertEquals($testResult2, $sortedList2);
+
+        $this->assertNotEquals($sortedList, $sortedList2);
     }
 
     public function testSortJsonWithCacheEnabledAndReset()
     {
-        $jsonSort = new App\JsonSort(\vfsStream::url($this->_sourceFile), true);
-        $sortedList = $jsonSort->getSortedList();
+        $repository = $this->_getRepositoryMock();
 
-        $this->assertCount(6, json_decode($sortedList));
+        $repository->expects($this->at(0))
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_firstContent));
+
+        $repository->expects($this->at(1))
+            ->method('getOutputList')
+            ->will($this->returnValue(false));
+
+        $repository->expects($this->once())
+            ->method('getOriginalList')
+            ->will($this->returnValue(json_decode($this->_sourceContent)));
+
+        $repository->expects($this->any())
+            ->method('resetList');
+
+        $jsonSort = new App\JsonSort($repository);
+        $sortedList1 = $jsonSort->getSortedList();
+
+        $testResult = json_encode($this->_firstContent);
+
+        $this->assertEquals($testResult, $sortedList1);
 
         $jsonSort->resetList();
-        
+
         $sortedList2 = $jsonSort->getSortedList();
 
-        $this->assertCount(6, json_decode($sortedList2));
+        // @todo we need to inject the sortlib to test this:
+        //$testResult2 = json_encode($this->_secondContent);
+        //$this->assertEquals($testResult2, $sortedList2);
 
-        $this->assertNotEquals($sortedList, $sortedList2); // well this might sometimes be equal though...
+        $this->assertNotEquals($sortedList1, $sortedList2);
     }
 }
