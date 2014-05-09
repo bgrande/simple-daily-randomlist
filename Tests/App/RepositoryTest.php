@@ -87,6 +87,15 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($repository->getOutputList());
     }
 
+    public function testCantGetOriginalList()
+    {
+        $this->_root = \vfsStream::setup('src', '0000');
+
+        $repository = new App\Repository(\vfsStream::url($this->_sourceFile), '1day');
+
+        $this->assertFalse($repository->getOriginalList());
+    }
+
 
 
     // @todo test missing methods and separate tests into method tests
