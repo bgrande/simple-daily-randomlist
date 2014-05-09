@@ -37,8 +37,6 @@ class File
      */
     public function setFile($file)
     {
-        /** @todo make sure file is a real file  */
-
         $this->_file = $file;
 
         if (!$this->_checkUploadFile()) {

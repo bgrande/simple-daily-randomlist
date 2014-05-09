@@ -121,8 +121,4 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($repository->getOriginalList());
     }
-
-
-
-    // @todo test missing methods and separate tests into method tests
 }
