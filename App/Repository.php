@@ -35,6 +35,15 @@ class Repository
      */
     public function __construct($filePath, $useCache = 'forever')
     {
+        if ($filePath === null) {
+            throw new \RuntimeException(
+                sprintf(
+                    'Could not read list input file %s',
+                    basename($filePath)
+                )
+            );
+        }
+
         $this->_originFilePath = $filePath;
 
         $this->_setOutputFilePath($useCache);
