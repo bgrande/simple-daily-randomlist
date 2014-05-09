@@ -75,6 +75,18 @@ class RepositoryTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($repository->getOutputList());
     }
 
+    public function testResetList()
+    {
+        $repository = new App\Repository(\vfsStream::url($this->_sourceFile), '1day');
+
+        $sorted = array("Dummy2", "Dummy4", "Dummy1", "Dummy3", "Dummy5", "Dummy6");
+        $repository->setOutputFile($sorted);
+
+        $repository->resetList();
+
+        $this->assertFalse($repository->getOutputList());
+    }
+
 
 
     // @todo test missing methods and separate tests into method tests
