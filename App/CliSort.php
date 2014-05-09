@@ -12,8 +12,8 @@ class CliSort extends AbstractSort implements SortInterface
         $sortedList = $this->_sortList();
         $title = "today's (" .
             $this->_date->format('Y-m-d') .
-            ") almost completely random daily list: \n";
+            ") almost completely random daily list:\n";
 
-        return $title . implode("\n", $sortedList) . "\n";
+        return trim($title . implode("\n", $sortedList) . "\n");
     }    
 }

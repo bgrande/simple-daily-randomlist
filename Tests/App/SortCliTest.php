@@ -17,6 +17,26 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
         "Dummy6"
     ]';
 
+    protected $_firstContent = array(
+        "Dummy2",
+        "Dummy3",
+        "Dummy5",
+        "Dummy4",
+        "Dummy1",
+        "Dummy6"
+    );
+
+    protected $_secondContent = array(
+        "Dummy2",
+        "Dummy1",
+        "Dummy6",
+        "Dummy4",
+        "Dummy3",
+        "Dummy5"
+    );
+
+    protected $_formattedDate;
+
     /**
      * @var \vfsStream
      */
@@ -30,54 +50,100 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
             $this->_sourceContent
         );
         $this->_root->addChild($devFile);
+
+        $date = new \DateTime();
+        $this->_formattedDate = $date->format('Y-m-d');
     }
 
     public function testSortCliWithCacheEnabled()
     {
         $repository = $this->_getRepositoryMock();
 
+        $repository->expects($this->any())
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_firstContent));
+
         $jsonSort = new App\CliSort($repository);
         $sortedList = $jsonSort->getSortedList();
-        
-        $this->assertContains("almost completely random daily list", $sortedList);
+
+        $testResult = "today's ($this->_formattedDate) almost completely random daily list:\nDummy2\nDummy3\nDummy5\nDummy4\nDummy1\nDummy6";
+
+        $this->assertEquals($testResult, $sortedList);
 
         $jsonSort2 = new App\CliSort($repository);
         $sortedList2 = $jsonSort2->getSortedList();
 
-        $this->assertContains("Dummy1", $sortedList);
+        $this->assertEquals($testResult, $sortedList2);
 
         $this->assertEquals($sortedList, $sortedList2);
     }
 
     public function testSortCliWithCacheDisabled()
     {
-        $jsonSort = new App\CliSort(\vfsStream::url($this->_sourceFile), false);
-        $sortedList = $jsonSort->getSortedList();
+        $repository1 = $this->_getRepositoryMock();
 
-        $this->assertContains("Dummy2", $sortedList);
+        $repository1->expects($this->any())
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_firstContent));
 
-        $jsonSort2 = new App\CliSort(\vfsStream::url($this->_sourceFile), false);
-        $sortedList2 = $jsonSort2->getSortedList();
+        $cliSort = new App\CliSort($repository1);
+        $sortedList = $cliSort->getSortedList();
 
-        $this->assertContains("Dummy3", $sortedList);
-        
-        $this->assertNotEquals($sortedList, $sortedList2); // well this might sometimes be equal though...
+        $testResult = "today's ($this->_formattedDate) almost completely random daily list:\nDummy2\nDummy3\nDummy5\nDummy4\nDummy1\nDummy6";
+
+        $this->assertEquals($testResult, $sortedList);
+
+        $repository2 = $this->_getRepositoryMock();
+
+        $repository2->expects($this->any())
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_secondContent));
+
+        $cliSort2 = new App\CliSort($repository2);
+        $sortedList2 = $cliSort2->getSortedList();
+
+        $testResult2 = "today's ($this->_formattedDate) almost completely random daily list:\nDummy2\nDummy1\nDummy6\nDummy4\nDummy3\nDummy5";
+
+        $this->assertEquals($testResult2, $sortedList2);
+
+        $this->assertNotEquals($sortedList, $sortedList2);
     }
 
     public function testSortCliWithCacheEnabledAndReset()
     {
-        $jsonSort = new App\CliSort(\vfsStream::url($this->_sourceFile), true);
-        $sortedList = $jsonSort->getSortedList();
+        $repository = $this->_getRepositoryMock();
 
-        $this->assertContains("Dummy4", $sortedList);
+        $repository->expects($this->at(0))
+            ->method('getOutputList')
+            ->will($this->returnValue($this->_firstContent));
 
-        $jsonSort->resetList();
+        $repository->expects($this->at(1))
+            ->method('getOutputList')
+            ->will($this->returnValue(false));
+
+        $repository->expects($this->once())
+            ->method('getOriginalList')
+            ->will($this->returnValue(json_decode($this->_sourceContent)));
+
+        $repository->expects($this->any())
+            ->method('resetList');
+
+        $cliSort = new App\CliSort($repository);
+        $sortedList1 = $cliSort->getSortedList();
+
+        $testResult = "today's ($this->_formattedDate) almost completely random daily list:\nDummy2\nDummy3\nDummy5\nDummy4\nDummy1\nDummy6";
+
+        $this->assertEquals($testResult, $sortedList1);
+
+        $cliSort->resetList();
         
-        $sortedList2 = $jsonSort->getSortedList();
-        
-        $this->assertContains("Dummy5", $sortedList2);
+        $sortedList2 = $cliSort->getSortedList();
 
-        $this->assertNotEquals($sortedList, $sortedList2); // well this might sometimes be equal though...
+        // @todo we need to inject the sortlib to test this:
+        //$testResult2 = "today's ($this->_formattedDate) almost completely random daily list:\nDummy2\nDummy1\nDummy6\nDummy4\nDummy3\nDummy5";
+        //$this->assertEquals($testResult2, $sortedList2);
+
+        $this->assertNotEquals($sortedList1, $sortedList2);
     }
 
     /**
@@ -90,6 +156,7 @@ class SortCliTest extends \PHPUnit_Framework_TestCase
             array('getOutputList', 'getOriginalList', 'setOutputFile', 'resetList'),
             array(\vfsStream::url($this->_sourceFile), '1day')
         );
+
         return $repository;
     }
 }
