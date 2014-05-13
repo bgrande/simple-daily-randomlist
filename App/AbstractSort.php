@@ -17,11 +17,18 @@ class AbstractSort
     protected $_date;
 
     /**
-     * @param \sort\App\Repository $repository
+     * @var \sort\Lib\Sort\Random
      */
-    public function __construct($repository)
+    protected $_sortLib;
+
+    /**
+     * @param \sort\App\Repository $repository
+     * @param string $sortType
+     */
+    public function __construct($repository, $sortType = Sort\SortFactory::TYPE_RANDOM)
     {
         $this->_repository = $repository;
+        $this->_sortLib = Sort\SortFactory::factory($sortType);
 
         $this->_date = new \DateTime();
     }    
@@ -45,9 +52,8 @@ class AbstractSort
             return $list;
         }
 
-        /** @var Sort\Random $sortLib */
-        $sortLib = Sort\SortFactory::factory(Sort\SortFactory::TYPE_RANDOM, $this->_repository->getOriginalList());
-        $sortedList = $sortLib->sort($this->_date);
+        $this->_sortLib->setSortList($this->_repository->getOriginalList());
+        $sortedList = $this->_sortLib->sort($this->_date);
 
         $this->_repository->setOutputFile($sortedList);
 
