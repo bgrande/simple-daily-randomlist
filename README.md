@@ -16,3 +16,4 @@ Sorts an array or defined json list for example of names by random either
 * make list durability configurable (not by day per default)
 * use classes for fileid and session management, maybe for output management, too... Do not forget tests
 * upload through cli?
+* captcha
