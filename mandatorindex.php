@@ -1,8 +1,12 @@
 <?php
-$error = $listId = '';
+$error = $listId = $cid = '';
 
 if (isset($_GET['listid'])) {
     $listId = $_GET['listid'];
+}
+
+if (isset($_GET['cid'])) {
+    $cid = $_GET['cid'];
 }
 
 if (isset($_GET['error'])) {
@@ -20,7 +24,7 @@ if (isset($_GET['error'])) {
 </head>
 <body>
 
-    <?php if ('' == $listId): ?>
+    <?php if ($listId == ''): ?>
 
     <div class="container">
         <div style="clear: both; height: 20px;"></div>
@@ -44,7 +48,7 @@ if (isset($_GET['error'])) {
                         <span class="input-group-btn">
                             <input type="submit" class="btn btn-small upload-file" value="Upload" />
                         </span>
-                </div>
+                    </div>
                 </form>
             </div>
         </div>
