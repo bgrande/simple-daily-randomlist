@@ -126,7 +126,7 @@ class File
      *
      * @return bool
      */
-    public function _moveUploadFile($targetPath)
+    protected function _moveUploadFile($targetPath)
     {
         return move_uploaded_file($this->_file['tmp_name'], $targetPath);
     }
@@ -134,7 +134,7 @@ class File
     /**
      * @return bool
      */
-    public function _checkUploadFile()
+    protected function _checkUploadFile()
     {
         return is_uploaded_file($this->_file['tmp_name']);
     }
