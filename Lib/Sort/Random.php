@@ -12,7 +12,15 @@ class Random implements SortLibInterface
     /**
      * @param array $sortList
      */
-    public function __construct(Array $sortList)
+    public function __construct(Array $sortList = array())
+    {
+        $this->_sortList = $sortList;
+    }
+
+    /**
+     * @param array $sortList
+     */
+    public function setSortList(Array $sortList)
     {
         $this->_sortList = $sortList;
     }

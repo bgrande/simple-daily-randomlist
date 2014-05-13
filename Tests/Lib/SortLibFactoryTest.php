@@ -53,9 +53,24 @@ class SortLibFactoryTest extends \PHPUnit_Framework_TestCase
      * @expectedException \InvalidArgumentException
      * @expectedExceptionMessage The list you provided ist empty!
      */
-    public function testWithoutList()
+    public function testWithoutValidList()
     {
-        Sort\SortFactory::factory('random');
+        Sort\SortFactory::factory('random', null);
+    }
+
+    public function testSetSortList()
+    {
+        $sortLib = Sort\SortFactory::factory('random');
+        $sortLib->setSortList(
+            array(
+                'Dev1',
+                'Dev2',
+                'Dev3',
+                'Dev4',
+            )
+        );
+
+        $this->assertContains('Dev1', $sortLib->sort());
     }
 
     /**

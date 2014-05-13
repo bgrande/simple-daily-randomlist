@@ -24,7 +24,7 @@ class SortFactory
      */
     public static function factory($type, $list = array())
     {
-        if (empty($list)) {
+        if (!is_array($list)) {
             throw new \InvalidArgumentException("The list you provided ist empty!");
         }
 
