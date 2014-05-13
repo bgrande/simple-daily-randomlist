@@ -17,6 +17,7 @@ class MailTest extends \PHPUnit_Framework_TestCase
         );
         $root->addChild($file);
 
+        /** @var \sort\Lib\Mail|\PHPUnit_Framework_MockObject_MockObject $mailLib */
         $mailLib = $this->getMock(
             'sort\Lib\Mail',
             array('_sendMail'),
