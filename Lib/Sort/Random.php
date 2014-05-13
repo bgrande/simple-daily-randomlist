@@ -18,6 +18,23 @@ class Random implements SortLibInterface
     }
 
     /**
+     * @param \DateTime $date
+     *
+     * @return array
+     */
+    public function sort($date = null)
+    {
+        // make sure we got a date
+        if (!($date instanceof \DateTime) || empty($date)) {
+            $date = new \DateTime();
+        }
+
+        $sortedDevs = $this->_shuffleArray($this->_sortList, $date);
+
+        return $sortedDevs;
+    }
+
+    /**
      * Completely nonsense random sorting
      * 
      * @param array     $sortList
@@ -40,22 +57,5 @@ class Random implements SortLibInterface
         }
 
         return $sortList;
-    }
-
-    /**
-     * @param \DateTime $date
-     * 
-     * @return array
-     */
-    public function sort($date = null) 
-    {	 
-        // make sure we got a date
-        if (!($date instanceof \DateTime) || empty($date)) {
-            $date = new \DateTime();
-        }
-        
-        $sortedDevs = $this->_shuffleArray($this->_sortList, $date);
-
-        return $sortedDevs;
     }
 }
