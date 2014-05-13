@@ -4,6 +4,8 @@ namespace sort\App;
 
 class Repository 
 {
+    const EXTENSION = 'json';
+
     /**
      * @var string
      */
@@ -156,21 +158,21 @@ class Repository
         $date = new \DateTime();
 
         $basePath = dirname($this->_originFilePath) . DIRECTORY_SEPARATOR .
-            basename($this->_originFilePath, '.json') . '_';
+            basename($this->_originFilePath, "." . self::EXTENSION) . '_';
 
         if ($useCache && in_array($useCache, $this->_cacheTypes)) {
             switch ($useCache) {
                 case '1day':
                     $yesterday = new \DateTime("-1 day");
-                    $fileToDelete = $basePath . $yesterday->format("Y-m-d") . ".json";
+                    $fileToDelete = $basePath . $yesterday->format("Y-m-d") . "." . self::EXTENSION;
                     $this->_deleteOutputFile($fileToDelete);
 
-                    $this->_outputFilePath = $basePath . $date->format("Y-m-d") . ".json";
+                    $this->_outputFilePath = $basePath . $date->format("Y-m-d") . "." . self::EXTENSION;
                     break;
 
                 case 'forever':
                 default:
-                    $this->_outputFilePath = $basePath . 'forever' . ".json";
+                    $this->_outputFilePath = $basePath . 'forever' . "." . self::EXTENSION;
             }
         } else {
             $this->_outputFilePath = null;
