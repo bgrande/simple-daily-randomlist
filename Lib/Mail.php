@@ -9,7 +9,7 @@ class Mail
     /**
      * @var string
      */
-    protected $_filePath;
+    protected $_filePath = null;
 
     /**
      * @var string
@@ -42,12 +42,19 @@ class Mail
     protected $_boundary;
 
     /**
+     * @param null|string $boundary
+     */
+    public function __construct($boundary = null)
+    {
+        $this->_boundary = sha1($boundary === null ? rand() : $boundary);
+    }
+
+    /**
      * @param string $filePath
      */
-    public function __construct($filePath)
+    public function setFile($filePath)
     {
         $this->_filePath = $filePath;
-        $this->_boundary = sha1(rand());
     }
 
     /**
@@ -98,6 +105,8 @@ class Mail
 
     /**
      * sends mail if file changed compared to yesterday
+     *
+     * @return void
      */
     public function sendMail()
     {
@@ -105,14 +114,14 @@ class Mail
 
         $additionalHeader = $this->_createHeader();
 
-        $subject = $this->_subject . ' ' . date('d.m.Y');
+        $subject = $this->_subject;
         $attachment = $this->_getAttachment(self::EOL);
 
-        $message = $this->_createMessage($attachment);
+        $message = trim($this->_createMessage($attachment));
 
         $header = implode(self::EOL, $additionalHeader);
 
-        mail($to, $subject, $message, $header);
+        $this->_sendMail($to, $subject, $message, $header);
     }
 
     /**
@@ -192,6 +201,17 @@ class Mail
         $header[] = 'From: ' . $this->_from;
 
         return $header;
+    }
+
+    /**
+     * @param string $to
+     * @param string $subject
+     * @param string $message
+     * @param string $header
+     */
+    protected function _sendMail($to, $subject, $message, $header)
+    {
+        mail($to, $subject, $message, $header);
     }
 
 }
