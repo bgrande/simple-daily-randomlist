@@ -29,9 +29,9 @@ class Random implements SortLibInterface
             $date = new \DateTime();
         }
 
-        $sortedDevs = $this->_shuffleArray($this->_sortList, $date);
+        $sortedList = $this->_shuffleArray($this->_sortList, $date);
 
-        return $sortedDevs;
+        return $sortedList;
     }
 
     /**
